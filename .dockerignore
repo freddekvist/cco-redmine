@@ -1,4 +1,4 @@
-# Git
+# Git (exclude only top-level .git, not subdirectories)
 .git
 .gitignore
 
@@ -14,6 +14,7 @@ log/*
 # Temporary files
 tmp/*
 .DS_Store
+**/.DS_Store
 
 # Test files
 test/
