@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+README.rdoc
+doc/
+
+# Logs
+*.log
+log/*
+
+# Temporary files
+tmp/*
+.DS_Store
+
+# Test files
+test/
+coverage/
+
+# Development dependencies
+.bundle/
+vendor/bundle/
+
+# Node modules (will be installed in container)
+node_modules/
+
+# Environment files
+.env*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+
+# Rails specific
+config/master.key
+config/credentials/*.key

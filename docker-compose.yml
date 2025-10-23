@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=production
+      - DATABASE_URL=sqlite3:db/production.sqlite3
+      - SECRET_KEY_BASE=your_secret_key_here_replace_in_production
+    volumes:
+      - ./files:/app/files
+      - ./log:/app/log
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=cco_redmine_production
+      - POSTGRES_USER=redmine
+      - POSTGRES_PASSWORD=redmine_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
