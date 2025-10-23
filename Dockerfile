@@ -1,20 +1,20 @@
 # Använd officiella Redmine som bas
 FROM redmine:5.1
 
-# Kopiera bara dina anpassade filer
+# Kopiera bara dina anpassade filer som finns
 COPY themes/ themes/
 COPY plugins/ plugins/
 
-# Om du har anpassade configs
-COPY config/additional_environment.rb config/additional_environment.rb
+# Kopiera config-filer som finns
+COPY config/database.yml config/database.yml
 
 # Sätt rätt ägare
 USER root
 RUN chown -R redmine:redmine themes/ plugins/ config/
 USER redmine
 
-# Installera eventuella extra gems från plugins
-RUN bundle install
+# Installera eventuella extra gems från plugins (hoppa över om inga nya gems)
+RUN bundle check || bundle install
 
 # Standard Redmine entrypoint och kommando
 ENTRYPOINT ["/docker-entrypoint.sh"]
