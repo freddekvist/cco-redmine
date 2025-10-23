@@ -1,5 +1,5 @@
-# Använd officiella Redmine som bas
-FROM redmine:5.1
+# Använd nyare Redmine som matchar din Rails-version
+FROM redmine:6.0
 
 # Kopiera bara dina anpassade filer som finns
 COPY themes/ themes/
