@@ -40,9 +40,16 @@ if [ -n "$isLikelyRedmine" ]; then
 	_fix_permissions
 	
 	# Generate database.yml if it doesn't exist and DATABASE_URL is provided
-	if [ ! -f './config/database.yml' ] && [ -n "${DATABASE_URL:-}" ]; then
-		echo "production:" > config/database.yml
-		echo "  url: $DATABASE_URL" >> config/database.yml
+	if [ ! -f './config/database.yml' ]; then
+		if [ -n "${DATABASE_URL:-}" ]; then
+			echo "Creating database.yml from DATABASE_URL..."
+			echo "production:" > config/database.yml
+			echo "  url: $DATABASE_URL" >> config/database.yml
+		else
+			echo >&2 "ERROR: No config/database.yml found and DATABASE_URL not set!"
+			echo >&2 "Please set DATABASE_URL environment variable or provide config/database.yml"
+			exit 1
+		fi
 	fi
 
 	# install additional gems for Gemfile.local and plugins
