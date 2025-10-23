@@ -29,12 +29,13 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 1.19
+ENV GOSU_VERSION=1.19
 RUN set -eux; \
     savedAptMark="$(apt-mark showmanual)"; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         gnupg \
+        wget \
     ; \
     rm -rf /var/lib/apt/lists/*; \
     \
@@ -55,13 +56,13 @@ RUN set -eux; \
     gosu --version; \
     gosu nobody true
 
-ENV RAILS_ENV production
+ENV RAILS_ENV=production
 
 WORKDIR /usr/src/redmine
 
 # https://github.com/docker-library/redmine/issues/138#issuecomment-438834176
 # (bundler needs this for running as an arbitrary user)
-ENV HOME /home/redmine
+ENV HOME=/home/redmine
 RUN set -eux; \
     [ ! -d "$HOME" ]; \
     mkdir -p "$HOME"; \
@@ -69,7 +70,7 @@ RUN set -eux; \
     chmod 1777 "$HOME"
 
 # Set Rails to log to STDOUT
-ENV RAILS_LOG_TO_STDOUT true
+ENV RAILS_LOG_TO_STDOUT=true
 
 # Copy application files
 COPY . .
