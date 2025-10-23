@@ -9,8 +9,6 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     postgresql-client \
-    sqlite3 \
-    libsqlite3-dev \
     libpq-dev \
     imagemagick \
     libmagickwand-dev \

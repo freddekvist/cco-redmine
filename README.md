@@ -20,21 +20,25 @@ En anpassad Redmine-installation för CCO.
    - Branch: `main`
    - Build Pack: `Docker`
 
-3. **Miljövariabler:**
-   Lägg till följande miljövariabler i Coolify:
+3. **Databas (automatisk setup):**
+   - Coolify kommer automatiskt att detektera att detta är en Rails-app
+   - En PostgreSQL-databas skapas automatiskt
+   - `DATABASE_URL` miljövariabel sätts automatiskt
+
+4. **Miljövariabler (lägg till manuellt):**
    ```
    RAILS_ENV=production
    SECRET_KEY_BASE=<generera en stark nyckel>
-   DATABASE_URL=<din databas-URL>
+   RAILS_SERVE_STATIC_FILES=true
+   RAILS_LOG_TO_STDOUT=true
    ```
 
-4. **Databas:**
-   - Skapa en PostgreSQL-databas i Coolify
-   - Använd databasanslutningen som DATABASE_URL
-
-5. **Volumes (om nödvändigt):**
-   - `/app/files` för filuppladdningar
-   - `/app/log` för loggar
+5. **Första deployment:**
+   - Efter första deployment, kör databasmigrationer via Coolify-terminalen:
+   ```bash
+   bundle exec rails db:migrate RAILS_ENV=production
+   bundle exec rails redmine:load_default_data RAILS_ENV=production REDMINE_LANG=sv
+   ```
 
 ### Generera SECRET_KEY_BASE
 

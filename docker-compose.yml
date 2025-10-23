@@ -7,8 +7,10 @@ services:
       - "3000:3000"
     environment:
       - RAILS_ENV=production
-      - DATABASE_URL=sqlite3:db/production.sqlite3
-      - SECRET_KEY_BASE=your_secret_key_here_replace_in_production
+      - DATABASE_URL=${DATABASE_URL:-postgresql://redmine:redmine_password@db:5432/cco_redmine_production}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-your_secret_key_here_replace_in_production}
+      - RAILS_SERVE_STATIC_FILES=true
+      - RAILS_LOG_TO_STDOUT=true
     volumes:
       - ./files:/app/files
       - ./log:/app/log
