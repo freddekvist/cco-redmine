@@ -18,22 +18,26 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy Gemfile and Gemfile.lock first to leverage Docker layer caching
-COPY Gemfile Gemfile.lock ./
+# Copy Gemfile and placeholder Gemfile.lock
+COPY Gemfile Gemfile.lock* ./
 
 # Install Ruby dependencies
-RUN bundle config set --local deployment 'true' && \
-    bundle config set --local without 'development test' && \
-    bundle install
+RUN bundle config set --local without 'development test' && \
+    bundle install && \
+    bundle lock --add-platform ruby && \
+    bundle lock --add-platform x86_64-linux
 
-# Copy package.json and yarn.lock for JS dependencies
-COPY package.json yarn.lock ./
+# Copy package.json for JS dependencies
+COPY package.json ./
 
 # Install JavaScript dependencies
-RUN npm install -g yarn && yarn install --frozen-lockfile
+RUN npm install -g yarn && yarn install
 
 # Copy the application code
 COPY . .
+
+# Ensure database configuration is available
+COPY config/database.yml config/database.yml
 
 # Precompile assets for production
 RUN RAILS_ENV=production bundle exec rails assets:precompile
