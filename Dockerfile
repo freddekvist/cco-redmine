@@ -13,6 +13,13 @@ RUN apt-get update && apt-get install -y \
     imagemagick \
     libmagickwand-dev \
     tzdata \
+    libyaml-dev \
+    libssl-dev \
+    libreadline-dev \
+    zlib1g-dev \
+    libncurses5-dev \
+    libffi-dev \
+    libgdbm-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -23,9 +30,7 @@ COPY Gemfile Gemfile.lock* ./
 
 # Install Ruby dependencies
 RUN bundle config set --local without 'development test' && \
-    bundle install && \
-    bundle lock --add-platform ruby && \
-    bundle lock --add-platform x86_64-linux
+    bundle install --jobs 4 --retry 3
 
 # Copy package.json for JS dependencies
 COPY package.json ./

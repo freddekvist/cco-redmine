@@ -3,6 +3,7 @@ GEM
   specs:
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
