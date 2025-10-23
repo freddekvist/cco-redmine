@@ -1,0 +1,36 @@
+# Database configuration for CCO Redmine
+# Supports both environment variable configuration (for production/Docker)
+# and local development setup
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: cco_redmine_development
+  host: localhost
+  username: postgres
+  password: postgres
+
+test:
+  <<: *default
+  database: cco_redmine_test
+  host: localhost
+  username: postgres
+  password: postgres
+
+production:
+  # Use DATABASE_URL environment variable if available (Coolify sets this automatically)
+  # Otherwise fall back to individual environment variables
+  <% if ENV['DATABASE_URL'].present? %>
+  url: <%= ENV['DATABASE_URL'] %>
+  <% else %>
+  <<: *default
+  database: <%= ENV['POSTGRES_DB'] || 'cco_redmine_production' %>
+  host: <%= ENV['POSTGRES_HOST'] || 'localhost' %>
+  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
+  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  port: <%= ENV['POSTGRES_PORT'] || 5432 %>
+  <% end %>

@@ -36,9 +36,6 @@ RUN npm install -g yarn && yarn install
 # Copy the application code
 COPY . .
 
-# Ensure database configuration is available
-COPY config/database.yml config/database.yml
-
 # Precompile assets for production
 RUN RAILS_ENV=production bundle exec rails assets:precompile
 
